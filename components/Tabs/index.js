@@ -14,6 +14,8 @@ axios.get('https://lambda-times-backend.herokuapp.com/topics').then(response => 
         topics.appendChild(info);
 
     })
+}).catch(error => {
+    console.log('This data was not returned', error);
 })
 
 const topics = document.querySelector('.topics');
