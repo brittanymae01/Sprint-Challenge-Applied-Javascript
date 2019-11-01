@@ -20,7 +20,11 @@
 
 axios.get('https://lambda-times-backend.herokuapp.com/articles').then(response => {
     const articleInfo = response.data.articles;
-    newCards.appendChild(createCards(articleInfo));
+    Object.keys(articleInfo).forEach(topic => {
+        articleInfo[topic].forEach(article => {
+            newCards.appendChild(createCards(article))
+        })
+    })
 })
     .catch(error => {
         console.log('This data was not returned', error);
@@ -32,27 +36,22 @@ function createCards(object) {
 
     const card = document.createElement('div');
     card.classList.add('card');
-
-    Object.keys(object).forEach(key => {
-        object[key].forEach(key2 => {
-            const header = document.createElement('div');
-            header.classList.add('headline');
-            header.textContent = key2.headline;
-            card.appendChild(header)
-            const authorDiv = document.createElement('div');
-            authorDiv.classList.add('author');
-            card.appendChild(authorDiv);
-            const imageDiv = document.createElement('div');
-            imageDiv.classList.add('img-container');
-            authorDiv.appendChild(imageDiv);
-            const image = document.createElement('img');
-            image.src = key2.authorPhoto;
-            imageDiv.appendChild(image);
-            const span = document.createElement('span');
-            span.textContent = `By: ${key2.authorName}`;
-            authorDiv.appendChild(span);
-        })
-    })
+    const header = document.createElement('div');
+    header.classList.add('headline');
+    header.textContent = object.headline;
+    card.appendChild(header)
+    const authorDiv = document.createElement('div');
+    authorDiv.classList.add('author');
+    card.appendChild(authorDiv);
+    const imageDiv = document.createElement('div');
+    imageDiv.classList.add('img-container');
+    authorDiv.appendChild(imageDiv);
+    const image = document.createElement('img');
+    image.src = object.authorPhoto;
+    imageDiv.appendChild(image);
+    const span = document.createElement('span');
+    span.textContent = `By: ${object.authorName}`;
+    authorDiv.appendChild(span);
 
     return card
 }
